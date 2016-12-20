@@ -1,6 +1,7 @@
-{
+{    
     "projects": [
         "src",
         "tests"
-    ]
+    ],
+    "packages": "packages"
 }

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace CardGames.Lib.Bura
 {
-    [DebuggerDisplay("{Suit}, {Name}, {Score}")]
+    [DebuggerDisplay("{Suit}, {Name}, {Score}, {IsTrump}")]
     public class BuraCard : Card, IComparable<BuraCard>
     {
         private static Dictionary<CardName, int> scores;
@@ -57,10 +57,7 @@ namespace CardGames.Lib.Bura
             if (a.Suit == b.Suit)
                 return a.Name > b.Name;
             
-            if (a.IsTrump)
-                return true;
-
-            return false;
+            return a.IsTrump;
         }   
 
         public static bool operator <(BuraCard a, BuraCard b)
@@ -68,10 +65,7 @@ namespace CardGames.Lib.Bura
             if (a.Suit == b.Suit)
                 return a.Name < b.Name;
             
-            if (b.IsTrump)
-                return true;
-
-            return false;
+            return b.IsTrump;
         }             
     }
 }
