@@ -12,12 +12,12 @@ namespace CardGames.Lib.Bura
         static BuraCard()
         {
             scores = new Dictionary<CardName, int>();
-            scores.Add(CardName.Ace, 11);
-            scores.Add(CardName.King, 4);
-            scores.Add(CardName.Queen, 3);
             scores.Add(CardName.Jack, 2);
-            scores.Add(CardName.Ten, 10);
-        }
+            scores.Add(CardName.Queen, 3);  
+            scores.Add(CardName.King, 4); 
+            scores.Add(CardName.Ten, 10);                        
+            scores.Add(CardName.Ace, 11);                                 
+    }
 
         public BuraCard(CardSuit suit, CardName name)
             : base(suit, name)
@@ -33,11 +33,11 @@ namespace CardGames.Lib.Bura
             set;
         }
 
-        public bool IsTrump
+        public bool Trump
         {
             get;
             set;
-        }
+        }        
 
         public int CompareTo(BuraCard other)
         {
@@ -47,25 +47,17 @@ namespace CardGames.Lib.Bura
                 result = this.Score.CompareTo(other.Score);
 
             if (result == 0)
-                result = this.IsTrump.CompareTo(other.IsTrump);
+                result = this.Trump.CompareTo(other.Trump);
 
             return result;
-        }
-
-        public static bool operator >(BuraCard a, BuraCard b)
-        {
-            if (a.Suit == b.Suit)
-                return a.Name > b.Name;
-            
-            return a.IsTrump;
         }   
 
-        public static bool operator <(BuraCard a, BuraCard b)
+        public bool CanBeat(BuraCard other)
         {
-            if (a.Suit == b.Suit)
-                return a.Name < b.Name;
+            if (this.Suit == other.Suit)
+                return this.Name > other.Name;
             
-            return b.IsTrump;
-        }             
+            return this.Trump;            
+        }         
     }
 }

@@ -9,33 +9,64 @@ namespace Tests
     public class BuraTests
     {
         [Fact]
-        public void One_Card_Greater_Than_Other() 
+        public void One_Card_CanBeat_Other() 
         {
-            var king = new BuraCard(CardSuit.Clubs, CardName.King);
-            king.IsTrump = true;
-            var ace = new BuraCard(CardSuit.Spades, CardName.Seven);
+            var king = new BuraCard(CardSuit.Clubs, CardName.Seven);            
+            var ace = new BuraCard(CardSuit.Spades, CardName.Ace);
 
-            var result = king > ace;
+            king.Trump = true;
+            var result = king.CanBeat(ace);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void Deffender_Can_Beat_Attacker() 
+        public void DefendCards_Can_Beat_AttackCards_Without_Trump() 
         {
-            var attacker = new List<BuraCard>();
-            var deffender = new List<BuraCard>(); 
+            var attackerCards = new CardCollection<BuraCard>();
+            var defenderCards = new CardCollection<BuraCard>(); 
 
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.Seven));  
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.Queen)); 
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.Ace));                       
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.Ten));
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.Jack)); 
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.King)); 
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.Nine)); 
-            attacker.Add(new BuraCard(CardSuit.Clubs, CardName.Eight));  
+            attackerCards.Add(new BuraCard(CardSuit.Clubs, CardName.Seven));  
+            attackerCards.Add(new BuraCard(CardSuit.Clubs, CardName.Queen));                     
+            attackerCards.Add(new BuraCard(CardSuit.Clubs, CardName.Eight));  
 
-            attacker.Sort();          
-        }        
+            defenderCards.Add(new BuraCard(CardSuit.Clubs, CardName.Ace));                       
+            defenderCards.Add(new BuraCard(CardSuit.Clubs, CardName.Ten));
+            defenderCards.Add(new BuraCard(CardSuit.Clubs, CardName.Nine)); 
+
+            var strategy = new BuraDefenseStrategy();
+
+            var tricks = strategy.Execute(attackerCards, defenderCards);
+
+            foreach (var trick in tricks)              
+            {
+                Assert.True(trick.Beaten);
+            }
+        }  
+
+        [Fact]
+        public void DefendCards_Can_Beat_AttackCards_With_Trump() 
+        {
+            var attackerCards = new CardCollection<BuraCard>();
+            var defenderCards = new CardCollection<BuraCard>(); 
+
+            attackerCards.Add(new BuraCard(CardSuit.Clubs, CardName.Seven));  
+            attackerCards.Add(new BuraCard(CardSuit.Clubs, CardName.Queen));                     
+            attackerCards.Add(new BuraCard(CardSuit.Clubs, CardName.Eight));  
+
+            defenderCards.Add(new BuraCard(CardSuit.Hearts, CardName.Six));
+            defenderCards[0].Trump = true;                       
+            defenderCards.Add(new BuraCard(CardSuit.Clubs, CardName.Ten));
+            defenderCards.Add(new BuraCard(CardSuit.Clubs, CardName.Nine)); 
+
+            var strategy = new BuraDefenseStrategy();
+
+            var tricks = strategy.Execute(attackerCards, defenderCards);
+
+            foreach (var trick in tricks)              
+            {
+                Assert.True(trick.Beaten);
+            }
+        }              
     }
 }

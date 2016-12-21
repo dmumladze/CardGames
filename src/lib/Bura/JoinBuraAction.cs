@@ -1,9 +1,8 @@
 using System;
-using CardGames.Lib.Actions;
 
 namespace CardGames.Lib.Bura
 {
-    public class JoinBuraAction : IAction<BuraGameState>
+    public class JoinBuraAction : IGameAction<BuraGameState>
     {
         private Player _player;
 

@@ -20,7 +20,7 @@ namespace CardGames.Lib
         {
             get;
             set;
-        }
+        }        
 
         public int CompareTo(Card other)
         {
@@ -30,6 +30,6 @@ namespace CardGames.Lib
                 result = this.Name.CompareTo(other.Name);
             
             return result;
-        }
+        }       
     }
 }

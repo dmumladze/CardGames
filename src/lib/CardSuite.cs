@@ -4,9 +4,9 @@ namespace CardGames.Lib
 {
     public enum CardSuit
     {
+        Clubs,
+        Diamonds,   
         Hearts,
-        Spades,
-        Diamonds,
-        Clubs
+        Spades            
     }
 }
