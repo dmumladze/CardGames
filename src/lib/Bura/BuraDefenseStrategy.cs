@@ -13,59 +13,59 @@ namespace CardGames.Lib.Bura
             var visitedCards = new HashSet<BuraCard>();
             var tricks = this.Defend(attackerCards, defenderCards, visitedCards);             
 
-            if (tricks.Count != defenderCards.Count)
-            {
-                var attackersLeft = new List<BuraCard>();
-                var defendersLeft = new List<BuraCard>();
+            if (tricks.Count == defenderCards.Count)
+                return  tricks;
 
-                for (var i = 0; i < attackerCards.Count; i++)       
-                { 
-                    if (!visitedCards.Contains(attackerCards[i]))        
-                        attackersLeft.Add(attackerCards[i]);
-                }
+            var attackersLeft = new List<BuraCard>();
+            var defendersLeft = new List<BuraCard>();
 
-                for (var i = 0; i < defenderCards.Count; i++)       
-                { 
-                    if (!visitedCards.Contains(defenderCards[i]))        
-                        defendersLeft.Add(defenderCards[i]);
-                } 
-
-                for (var i = 0; i < attackersLeft.Count; i++)
-                     tricks.Add(new Trick<BuraCard>(attackersLeft[i], defendersLeft[i]));                             
+            foreach (var card in attackerCards)       
+            { 
+                if (!visitedCards.Contains(card))        
+                    attackersLeft.Add(card);
             }
+
+            foreach (var card in defenderCards)       
+            { 
+                if (!visitedCards.Contains(card))        
+                    defendersLeft.Add(card);
+            } 
+
+            for (var i = 0; i < attackersLeft.Count; i++)
+                tricks.Add(new Trick<BuraCard>(attackersLeft[i], defendersLeft[i]));                                         
                         
             return tricks;  
         }  
 
-        private List<Trick<BuraCard>> Defend(CardCollection<BuraCard> attackCards, CardCollection<BuraCard> defendCards, HashSet<BuraCard> visitedCards)
+        private List<Trick<BuraCard>> Defend(CardCollection<BuraCard> attackerCards, CardCollection<BuraCard> defenderCards, HashSet<BuraCard> visitedCards)
         {
             var tricks = new List<Trick<BuraCard>>();
             
-            foreach (var attackCard in attackCards)
+            foreach (var attackerCard in attackerCards)
             {   
                 var trick = new Trick<BuraCard>();                
                 
-                foreach (var defendCard in defendCards)
+                foreach (var defenderCard in defenderCards)
                 { 
-                    if (visitedCards.Contains(defendCard))
+                    if (visitedCards.Contains(defenderCard))
                         continue;
                                                             
-                    if (defendCard.CanBeat(attackCard))
+                    if (defenderCard.CanBeat(attackerCard))
                     { 
-                        trick.AttackCard = attackCard;
-                        trick.DefendCard = defendCard;   
-                        trick.Beaten = true;  
+                        trick.AttackerCard = attackerCard;
+                        trick.DefenderCard = defenderCard;   
+                        trick.Completed = true;  
 
                         tricks.Add(trick);
 
-                        visitedCards.Add(attackCard);
-                        visitedCards.Add(defendCard); 
+                        visitedCards.Add(attackerCard);
+                        visitedCards.Add(defenderCard); 
                                                                                                                     
                         break;                       
                     }                    
                 }
                 
-                if (!trick.Beaten) break;
+                if (!trick.Completed) break;
             }
 
             return tricks;

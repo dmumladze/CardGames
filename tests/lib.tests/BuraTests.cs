@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Xunit;
 using CardGames.Lib;
 using CardGames.Lib.Bura;
@@ -9,19 +8,19 @@ namespace Tests
     public class BuraTests
     {
         [Fact]
-        public void One_Card_CanBeat_Other() 
+        public void Trump_CanBeat_Non_Trump() 
         {
-            var king = new BuraCard(CardSuit.Clubs, CardName.Seven);            
+            var six = new BuraCard(CardSuit.Clubs, CardName.Six);            
             var ace = new BuraCard(CardSuit.Spades, CardName.Ace);
 
-            king.Trump = true;
-            var result = king.CanBeat(ace);
+            six.Trump = true;
+            var result = six.CanBeat(ace);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void DefendCards_Can_Beat_AttackCards_Without_Trump() 
+        public void DefenderCards_Can_Beat_AttackerCards_Without_Trump() 
         {
             var attackerCards = new CardCollection<BuraCard>();
             var defenderCards = new CardCollection<BuraCard>(); 
@@ -40,12 +39,12 @@ namespace Tests
 
             foreach (var trick in tricks)              
             {
-                Assert.True(trick.Beaten);
+                Assert.True(trick.Completed);
             }
         }  
 
         [Fact]
-        public void DefendCards_Can_Beat_AttackCards_With_Trump() 
+        public void DefenderCards_Can_Beat_AttackerCards_With_Trump() 
         {
             var attackerCards = new CardCollection<BuraCard>();
             var defenderCards = new CardCollection<BuraCard>(); 
@@ -65,7 +64,7 @@ namespace Tests
 
             foreach (var trick in tricks)              
             {
-                Assert.True(trick.Beaten);
+                Assert.True(trick.Completed);
             }
         }              
     }

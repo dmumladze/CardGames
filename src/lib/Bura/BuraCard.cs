@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace CardGames.Lib.Bura
 {
-    [DebuggerDisplay("{Suit}, {Name}, {Score}, {IsTrump}")]
+    [DebuggerDisplay("{Suit}, {Name}, {Score}, {Trump}")]
     public class BuraCard : Card, IComparable<BuraCard>
     {
         private static Dictionary<CardName, int> scores;

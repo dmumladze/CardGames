@@ -10,23 +10,23 @@ namespace CardGames.Lib
 
         public Trick(T attackCard, T defendCard)      
         {
-            this.AttackCard = attackCard;
-            this.DefendCard = defendCard;
+            this.AttackerCard = attackCard;
+            this.DefenderCard = defendCard;
         }
 
-        public T AttackCard 
+        public T AttackerCard 
         {
             get;
             set;
         }
 
-        public T DefendCard 
+        public T DefenderCard 
         {
             get;
             set;
         }
 
-        public bool Beaten
+        public bool Completed
         {
             get;
             set;
