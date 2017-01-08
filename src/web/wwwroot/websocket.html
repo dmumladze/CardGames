@@ -1,0 +1,45 @@
+<html>
+<body>
+
+<div id="output"></div>
+
+<script language="javascript" type="text/javascript">
+var socket;
+var uri = "ws://" + window.location.host + "/ws?game=Bura";
+var output;
+var t;
+var text = "test echo";
+
+function write(s) {
+    var p = document.createElement("p");
+    p.innerHTML = s;
+    output.appendChild(p);
+}
+
+function doConnect() {
+    socket = new WebSocket(uri);
+    socket.onopen = function (e) { write("opened " + uri); doSend(); };
+    socket.onclose = function (e) { write("closed"); };
+    socket.onmessage = function (e) { write("Received: " + e.data); };
+    socket.onerror = function (e) { write("Error: " + e.data); };
+}
+
+function doSend() {
+    write("Sending: " + text);
+
+    t = setInterval(function() {
+        socket.send(text);
+        console.log('sent');
+    }, 5000);    
+}
+
+function onInit() {
+    output = document.getElementById("output");
+    doConnect();
+}
+
+window.onload = onInit;
+</script>
+
+</body>
+</html>

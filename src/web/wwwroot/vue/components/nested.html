@@ -1,0 +1,52 @@
+
+<script src="https://unpkg.com/vue@2.1.7/dist/vue.js"></script>
+
+<template type="x-template" id="parent">
+    <div>
+        <div>I'm {{whoami}}</div>
+        <child v-bind:child-message="parentMessage" />
+    </div>
+</template>
+
+<template type="x-template" id="child">
+    <div>{{childMessage}}</div>
+</template>
+
+<div id="test">
+    <input v-model="message" />
+    <parent v-bind:parent-message="message" />
+</div>
+
+<script>
+    Vue.component("parent", {
+        props: {
+            parentMessage: {
+                type: String,
+                default: "he's my child" //if not overriden by <parent v-bind:parent-message="message" />
+            }
+        },
+        template: '#parent',
+        data: function() {
+            return {
+                whoami: "parent"
+            }
+        }        
+    })
+
+    Vue.component("child", {
+        props: ["childMessage"],
+        template: "#child",
+        computed: {
+            whoami: function() {
+                this.childMessage
+            }
+        }      
+    })
+
+    new Vue({
+        el: "#test",
+        data: {
+            message: "down to child" //goes to <parent v-bind:parent-message="message" />
+        }
+    })   
+</script>
