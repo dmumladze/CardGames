@@ -17,11 +17,13 @@ namespace CardGames.Web
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
+                .AddEnvironmentVariables()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
+                builder.AddUserSecrets();
             }
 
             builder.AddEnvironmentVariables();
@@ -32,6 +34,7 @@ namespace CardGames.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
             services.AddMvc();
         }
 
