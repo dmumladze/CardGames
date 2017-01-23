@@ -81,9 +81,9 @@ namespace CardGames.Web.Middleware
 
     public static class MiddlewareRegistrationExtensions 
     {
-        public static void UseBuraMiddleware(this IApplicationBuilder builder, string path)
+        public static void UseBuraMiddleware(this IApplicationBuilder builder)
         {          
-            builder.UseMiddleware<BuraMiddleware>(path);
+            builder.UseMiddleware<BuraMiddleware>("/ws/bura");
         }  
     }  
 }

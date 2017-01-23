@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CardGames.Web.Middleware;
 using CardGames.Web.Services;
+using log4net;
+
+[assembly: log4net.Config.XmlConfigurator(ConfigFile="log4net.config", Watch=true)]
 
 namespace CardGames.Web
 {
@@ -24,8 +27,8 @@ namespace CardGames.Web
 
             if (env.IsDevelopment())
             {
-                builder.AddUserSecrets();
-            }
+                builder.AddUserSecrets();                
+            }                        
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -55,12 +58,15 @@ namespace CardGames.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            var log = log4net.LogManager.GetLogger(typeof(Startup));
+            log.Info("Hi");
+
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
-            app.UseWebSockets();
+            app.UseWebSockets();            
 
-            app.UseBuraMiddleware("/ws/bura");
+            app.UseBuraMiddleware();            
 
             app.UseMvc(routes =>
             {
