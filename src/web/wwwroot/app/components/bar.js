@@ -4,7 +4,7 @@ define([
     'use strict';
 
     return function(resolve) {
-        require(['text!views/bar.html'], function(bar) {
+        require(['text!app/views/bar.html'], function(bar) {
             resolve({
                 template: bar,
 

@@ -56,7 +56,7 @@ namespace CardGames.Web
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
-            app.Map("/ws", WebSocketMiddleware.Map);
+            app.Map("/ws/bura", WebSocketMiddleware.Map);
 
             app.UseMvc(routes =>
             {

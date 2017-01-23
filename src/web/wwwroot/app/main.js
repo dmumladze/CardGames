@@ -5,10 +5,10 @@ define([
 
     'axios',
 
-    'com/foo',
-    'com/bar'    
+    'app/components/bura',
+    'app/components/bar'    
 
-], function(Vue, VueRouter, axios, foo, bar) {
+], function(Vue, VueRouter, axios, bura, bar) {
     'use strict';
 
     Vue.prototype.$http = axios
@@ -17,7 +17,7 @@ define([
 
     var routes = [
         { path: '/', component: {} },
-        { path: '/foo', component: foo },
+        { path: '/bura', component: bura },
         { path: '/bar', component: bar }
     ]
 

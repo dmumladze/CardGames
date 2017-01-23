@@ -7,22 +7,19 @@
 
     <script>
         require.config({
-            baseUrl: './lib',
+            baseUrl: './',
             paths: {
-                'app': '../app',
-                'views': '../app/views',
-                'com': '../app/components',
-                'vue': 'vue-2.1.7',
-                'vue-router': 'vue-router-2.1.1',
-                'text': 'require-text-2.0.15',
-                'axios': 'axios-0.15.3'
+                'vue': 'lib/vue-2.1.7',
+                'vue-router': 'lib/vue-router-2.1.1',
+                'text': 'lib/require-text-2.0.15',
+                'axios': 'lib/axios-0.15.3'
             }
         })
     </script>
 
     <div id="app">
 
-        <router-link to="/foo">Go to Foo</router-link>
+        <router-link to="/bura">Go to Bura</router-link>
         <router-link to="/bar">Go to Bar</router-link>
 
         <router-view></router-view>
