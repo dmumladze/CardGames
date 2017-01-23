@@ -11,6 +11,7 @@ define([
 
             resolve({
                 name: 'bura',
+                
                 template: bura,
                 data: function() {
                     return {

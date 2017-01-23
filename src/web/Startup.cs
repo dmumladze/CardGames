@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CardGames.Web.Middleware;
+using CardGames.Web.Services;
 
 namespace CardGames.Web
 {
@@ -36,6 +37,7 @@ namespace CardGames.Web
         {
             services.AddOptions();
             services.AddMvc();
+            services.AddTransient<IGameRepository, GameRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -56,7 +58,9 @@ namespace CardGames.Web
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
-            app.Map("/ws/bura", WebSocketMiddleware.Map);
+            app.UseWebSockets();
+
+            app.UseBuraMiddleware("/ws/bura");
 
             app.UseMvc(routes =>
             {

@@ -7,23 +7,29 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using CardGames.Web.Services;
 
 namespace CardGames.Web.Middleware
 {
-    public class WebSocketMiddleware
+    public class BuraMiddleware
     {
-        public const int BufferSize = 2;
+        public const int BufferSize = 1024;
 
         private WebSocket socket;
+        private RequestDelegate pipeline;
+        private IGameRepository repository;
+        private PathString path;
         private ArrayPool<byte> pool;
 
-        public WebSocketMiddleware(WebSocket socket)
+        public BuraMiddleware(RequestDelegate next, IGameRepository repository, string path)
         {
-            this.socket = socket;
-            this.pool = ArrayPool<byte>.Create(5, 5);
+            this.pipeline = next;
+            this.repository = repository;
+            this.path = new PathString(path);
+            this.pool = ArrayPool<byte>.Create(5, 5);            
         }
 
-        public async Task EchoLoop()
+        public async Task HandleRequest()
         {            
             while (this.socket.State == WebSocketState.Open)
             {
@@ -56,22 +62,28 @@ namespace CardGames.Web.Middleware
             Debug.WriteLine("Outside loop: {0}", Thread.CurrentThread.ManagedThreadId);
         } 
 
-        static async Task Acceptor(HttpContext context, Func<Task> next)
+        public async Task Invoke(HttpContext context)
         {
-            if (!context.WebSockets.IsWebSocketRequest)
+            if (!context.WebSockets.IsWebSocketRequest || !context.Request.Path.StartsWithSegments(this.path))
+            {
+                await this.pipeline.Invoke(context);
                 return;
-            
-            Debug.WriteLine("Accepted");
-            var socket = await context.WebSockets.AcceptWebSocketAsync();
-            var h = new WebSocketMiddleware(socket);
-            await h.EchoLoop();
-            Debug.WriteLine("Accepted 2");
-        }   
+            }
 
-        public static void Map(IApplicationBuilder app)
-        {
-            app.UseWebSockets();
-            app.Use(WebSocketMiddleware.Acceptor);
-        }                     
-    }   
+            Debug.WriteLine("Accepted");
+
+            this.socket = await context.WebSockets.AcceptWebSocketAsync();
+            await this.HandleRequest();
+            
+            Debug.WriteLine("Accepted 2");
+        }                   
+    } 
+
+    public static class MiddlewareRegistrationExtensions 
+    {
+        public static void UseBuraMiddleware(this IApplicationBuilder builder, string path)
+        {          
+            builder.UseMiddleware<BuraMiddleware>(path);
+        }  
+    }  
 }
